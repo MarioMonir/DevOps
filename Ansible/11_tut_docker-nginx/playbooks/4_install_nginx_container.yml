@@ -1,0 +1,41 @@
+- name: "Install and Start Nginx Service on AWS techihve master"
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - - - - - -
+  
+  vars:
+    container_count: 1
+    container_name: "nginx"
+    container_image: "nginx:latest"
+    container_exposed_port: "80:80"
+    server_nginx_conf_path: "/etc/nginx/conf.d/{{project_name}}.conf"
+    project_port: "6080"
+    project_name: "test2"
+    project_domain: "devops.techhive.dev"
+
+
+  # - - - - - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Get Number of Cores
+      ansible.builtin.debug:
+        msg: "cores {{ ansible_processor_vcpus }}"
+
+    - name: Get curerrent path
+      ansible.builtin.debug:
+        msg: "cores {{ playbook_dir }}"
+
+#     - name: "Start {{ container_name }} container"
+#       community.docker.docker_container:
+#         name: "{{ container_name }}"
+#         image: "{{ container_image }}"
+#         state: started
+#         ports:
+#           - "{{ container_exposed_port }}"
+
+
+    - name: Template the nginx config file and restart nginx
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/../templates/nginx.conf.j2"
+        dest: "/etc/nginx/conf.d/{{ project_name }}.conf"

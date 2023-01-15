@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  mario_app_mysqldb:
+    image: mysql:5.7
+    container_name: mario_app_mysqldb
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_DATABASE=$DB_NAME
+      - MYSQL_PASSWORD=$DB_PASSWORD
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+    ports:
+      - $DB_PORT:$DB_PORT
+    networks:
+      - app_network
+    volumes:
+      - db_volume:/var/lib/mysql
+
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+  mario_app:
+    container_name: mario_app
+    restart: unless-stopped
+    env_file: ./.env
+    build: .
+    depends_on:
+      - mario_app_mysqldb
+    ports:
+      - $PORT:$PORT
+    expose:
+      - $PORT
+    networks:
+      - app_network
+
+# ------------------------------------ 
+
+networks:
+  app_network:
+
+volumes: 
+  db_volume:

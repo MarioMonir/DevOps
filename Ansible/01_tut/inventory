@@ -1,0 +1,16 @@
+
+# [servers_group_name]
+# alias_for_server_name    # server_hostname_or_ip_address    # user_of_server     
+
+# -----------------------------------------------------------------------------
+
+[techhive]
+techhive2 ansible_host=35.180.190.53 ansible_user=ubuntu
+
+# -----------------------------------------------------------------------------
+
+
+# you can set variables 
+# [servers_group_name:vars]
+# ansible_ssh_user=ubuntu
+# ansible_ssh_private_key_filename=~/.ssh/private_keys

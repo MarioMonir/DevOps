@@ -1,0 +1,10 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: react-k8s
+spec:
+  containers:
+    - name: react-k8s
+      image: mariomonir/react-k8s
+      ports:
+      - containerPort: 3000

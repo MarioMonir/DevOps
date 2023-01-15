@@ -1,0 +1,9 @@
+# techhive group
+[techhive]
+techhive2 ansible_host=35.180.190.53 
+
+
+
+# techhive group variables
+[techhive:vars]
+ansible_user=ubuntu

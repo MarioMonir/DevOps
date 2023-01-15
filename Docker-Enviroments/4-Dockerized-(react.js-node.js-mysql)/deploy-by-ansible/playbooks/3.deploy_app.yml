@@ -1,0 +1,28 @@
+- name: Deploy app by Docker Compose
+  hosts: all
+  become: true
+  vars_files: "../vars/vars.yml"
+
+  # ----------------------------------------------------
+
+  tasks:
+    - name: "Create a {{ PROJECT_PATH }} directory if not exist"
+      ansible.builtin.file:
+        path: "{{ PROJECT_PATH }}"
+        state: directory
+        mode: "0755"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Pull / Clone Repo if not exist
+      ansible.builtin.git:
+        repo: "{{ project_repo }}"
+        dest: "{{ project_path }}{{ project_name }}"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Deploy Docker Compose stack
+      community.docker.docker_compose:
+        project_src: "{{ PROJECT_PATH }}"
+        files:
+          - docker-compose.yml

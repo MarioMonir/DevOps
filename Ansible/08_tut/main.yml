@@ -1,0 +1,10 @@
+- name: ping server by private key
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: "Just Ping the server"
+      ansible.builtin.ping:
+

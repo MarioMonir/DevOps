@@ -1,0 +1,12 @@
+# Nginx Variables 
+# -----------------
+nginx_container_name: "nginx"
+nginx_container_image: "nginx:latest"
+nginx_container_exposed_port: "80:80"
+
+# Project Variables 
+# ------------------
+project_repo: ""
+project_port: "6080"
+project_name: "test2"
+project_domain: "devops.techhive.dev"

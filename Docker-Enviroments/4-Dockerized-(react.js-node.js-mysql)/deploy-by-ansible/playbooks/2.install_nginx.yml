@@ -1,0 +1,57 @@
+- name: Install Nginx and Certbot-Nginx
+  hosts: all
+  become: true
+  vars_files: "../vars/vars.yml"
+
+  # ----------------------------------------------------
+
+  tasks:
+    - name: Ensure Required Packages is Installed
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      with_items:
+        - nginx
+        - certbot
+        - python3-certbot-nginx
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Ensure Nginx Service is Started
+      ansible.builtin.service:
+        name: nginx
+        state: started
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: "Template the nginx {{ PROJECT_NAME }}.conf"
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/templates/nginx.conf.j2"
+        dest: "/etc/nginx/conf.d/{{ PROJECT_NAME }}.conf"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: "Create a {{ PROJECT_PATH }} nginx log directory if not exist"
+      ansible.builtin.file:
+        path: "/var/log/nginx/{{ PROJECT_NAME }}"
+        state: directory
+        mode: "0755"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Setup Certbot for Nginx
+      ansible.builtin.shell: >
+        certbot --nginx
+        -d {{ PROJECT_DOMAIN }}
+        -m {{ PROJECT_EMAIL }}
+        --non-interactive --agree-tos
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Ensure Nginx Service is Restared
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+    # - - - - - - - - - - - - - - - - - -
