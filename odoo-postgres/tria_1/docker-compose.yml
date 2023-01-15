@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  web:
+    image: odoo:14.0
+    # This is only for arm ( Apple m1 )
+    platform: linux/amd64  
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      # /host/path:/container/path
+      - ./om_account_accountant-16.0.1.0.0:/mnt/extra-addons
+  db:
+    image: postgres:13
+    # This is only for arm ( Apple m1 )
+    platform: linux/amd64  
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    
