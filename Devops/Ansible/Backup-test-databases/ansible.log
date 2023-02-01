@@ -1,0 +1,64 @@
+2022-08-25 12:09:16,493 p=105923 u=ubuntu n=ansible | PLAY [Backup My Shop Database on Test Enviroment ( Contabo )] ************************************************************************************************
+2022-08-25 12:09:16,508 p=105923 u=ubuntu n=ansible | TASK [Gathering Facts] ***************************************************************************************************************************************
+2022-08-25 12:09:20,311 p=105923 u=ubuntu n=ansible | ok: [contabo]
+2022-08-25 12:09:20,346 p=105923 u=ubuntu n=ansible | TASK [Create a /root/backups/my_shop directory if it does not exist] *****************************************************************************************
+2022-08-25 12:09:21,237 p=105923 u=ubuntu n=ansible | ok: [contabo]
+2022-08-25 12:09:21,255 p=105923 u=ubuntu n=ansible | TASK [Find and Delete Sql Files ( backups ) Older than 1 Day] ************************************************************************************************
+2022-08-25 12:09:21,975 p=105923 u=ubuntu n=ansible | changed: [contabo]
+2022-08-25 12:09:21,993 p=105923 u=ubuntu n=ansible | TASK [Backup myshop_database Docker Database] ****************************************************************************************************************
+2022-08-25 12:09:25,498 p=105923 u=ubuntu n=ansible | changed: [contabo]
+2022-08-25 12:09:25,516 p=105923 u=ubuntu n=ansible | TASK [Copy myshop_database sql From Remote to Local] *********************************************************************************************************
+2022-08-25 12:09:28,025 p=105923 u=ubuntu n=ansible | changed: [contabo]
+2022-08-25 12:09:28,058 p=105923 u=ubuntu n=ansible | PLAY [Backup Sal Database on Test Enviroment ( Contabo )] ****************************************************************************************************
+2022-08-25 12:09:28,072 p=105923 u=ubuntu n=ansible | TASK [Gathering Facts] ***************************************************************************************************************************************
+2022-08-25 12:09:29,578 p=105923 u=ubuntu n=ansible | ok: [contabo]
+2022-08-25 12:09:29,609 p=105923 u=ubuntu n=ansible | TASK [Create a /root/backups/sal directory if it does not exist] *********************************************************************************************
+2022-08-25 12:09:30,334 p=105923 u=ubuntu n=ansible | ok: [contabo]
+2022-08-25 12:09:30,350 p=105923 u=ubuntu n=ansible | TASK [Find and Delete Sql Files ( backups ) Older than 7 Days] ***********************************************************************************************
+2022-08-25 12:09:30,941 p=105923 u=ubuntu n=ansible | changed: [contabo]
+2022-08-25 12:09:30,959 p=105923 u=ubuntu n=ansible | TASK [Backup sal_db Docker Database] *************************************************************************************************************************
+2022-08-25 12:09:33,034 p=105923 u=ubuntu n=ansible | changed: [contabo]
+2022-08-25 12:09:33,052 p=105923 u=ubuntu n=ansible | TASK [Copy sal_db sql From Remote to Local] ******************************************************************************************************************
+2022-08-25 12:09:34,167 p=105923 u=ubuntu n=ansible | changed: [contabo]
+2022-08-25 12:09:34,195 p=105923 u=ubuntu n=ansible | PLAY RECAP ***************************************************************************************************************************************************
+2022-08-25 12:09:34,196 p=105923 u=ubuntu n=ansible | contabo                    : ok=10   changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2022-08-25 12:09:34,196 p=105923 u=ubuntu n=ansible | Playbook run took 0 days, 0 hours, 0 minutes, 17 seconds
+2022-08-31 10:19:04,024 p=126886 u=ubuntu n=ansible | PLAY [Backup My Shop Database on Test Enviroment ( Contabo )] ***************************************************************************
+2022-08-31 10:19:04,039 p=126886 u=ubuntu n=ansible | TASK [Gathering Facts] ******************************************************************************************************************
+2022-08-31 10:19:07,876 p=126886 u=ubuntu n=ansible | ok: [contabo]
+2022-08-31 10:19:07,911 p=126886 u=ubuntu n=ansible | TASK [Create a /root/backups/my_shop directory if it does not exist] ********************************************************************
+2022-08-31 10:19:08,845 p=126886 u=ubuntu n=ansible | ok: [contabo]
+2022-08-31 10:19:08,863 p=126886 u=ubuntu n=ansible | TASK [Find and Delete Sql Files ( backups ) Older than 1 Day] ***************************************************************************
+2022-08-31 10:19:09,699 p=126886 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:19:09,717 p=126886 u=ubuntu n=ansible | TASK [Backup myshop_database Docker Database] *******************************************************************************************
+2022-08-31 10:19:13,012 p=126886 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:19:13,030 p=126886 u=ubuntu n=ansible | TASK [Copy myshop_database sql From Remote to Local] ************************************************************************************
+2022-08-31 10:19:15,423 p=126886 u=ubuntu n=ansible | fatal: [contabo]: FAILED! => {"msg": "Unable to create local directories(/Users/mario/Mario/work/backups/test/my_shop): [Errno 13] Permission denied: b'/Users'"}
+2022-08-31 10:19:15,428 p=126886 u=ubuntu n=ansible | PLAY RECAP ******************************************************************************************************************************
+2022-08-31 10:19:15,429 p=126886 u=ubuntu n=ansible | contabo                    : ok=4    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2022-08-31 10:19:15,429 p=126886 u=ubuntu n=ansible | Playbook run took 0 days, 0 hours, 0 minutes, 11 seconds
+2022-08-31 10:19:49,376 p=126946 u=ubuntu n=ansible | PLAY [Backup My Shop Database on Test Enviroment ( Contabo )] ***************************************************************************
+2022-08-31 10:19:49,392 p=126946 u=ubuntu n=ansible | TASK [Gathering Facts] ******************************************************************************************************************
+2022-08-31 10:19:53,132 p=126946 u=ubuntu n=ansible | ok: [contabo]
+2022-08-31 10:19:53,165 p=126946 u=ubuntu n=ansible | TASK [Create a /root/backups/my_shop directory if it does not exist] ********************************************************************
+2022-08-31 10:19:53,953 p=126946 u=ubuntu n=ansible | ok: [contabo]
+2022-08-31 10:19:53,970 p=126946 u=ubuntu n=ansible | TASK [Find and Delete Sql Files ( backups ) Older than 1 Day] ***************************************************************************
+2022-08-31 10:19:54,778 p=126946 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:19:54,797 p=126946 u=ubuntu n=ansible | TASK [Backup myshop_database Docker Database] *******************************************************************************************
+2022-08-31 10:19:57,265 p=126946 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:19:57,283 p=126946 u=ubuntu n=ansible | TASK [Copy myshop_database sql From Remote to Local] ************************************************************************************
+2022-08-31 10:19:59,373 p=126946 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:19:59,405 p=126946 u=ubuntu n=ansible | PLAY [Backup Sal Database on Test Enviroment ( Contabo )] *******************************************************************************
+2022-08-31 10:19:59,420 p=126946 u=ubuntu n=ansible | TASK [Gathering Facts] ******************************************************************************************************************
+2022-08-31 10:20:00,889 p=126946 u=ubuntu n=ansible | ok: [contabo]
+2022-08-31 10:20:00,920 p=126946 u=ubuntu n=ansible | TASK [Create a /root/backups/sal directory if it does not exist] ************************************************************************
+2022-08-31 10:20:01,762 p=126946 u=ubuntu n=ansible | ok: [contabo]
+2022-08-31 10:20:01,779 p=126946 u=ubuntu n=ansible | TASK [Find and Delete Sql Files ( backups ) Older than 7 Days] **************************************************************************
+2022-08-31 10:20:02,558 p=126946 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:20:02,576 p=126946 u=ubuntu n=ansible | TASK [Backup sal_db Docker Database] ****************************************************************************************************
+2022-08-31 10:20:05,282 p=126946 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:20:05,300 p=126946 u=ubuntu n=ansible | TASK [Copy sal_db sql From Remote to Local] *********************************************************************************************
+2022-08-31 10:20:06,394 p=126946 u=ubuntu n=ansible | changed: [contabo]
+2022-08-31 10:20:06,423 p=126946 u=ubuntu n=ansible | PLAY RECAP ******************************************************************************************************************************
+2022-08-31 10:20:06,423 p=126946 u=ubuntu n=ansible | contabo                    : ok=10   changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2022-08-31 10:20:06,424 p=126946 u=ubuntu n=ansible | Playbook run took 0 days, 0 hours, 0 minutes, 17 seconds

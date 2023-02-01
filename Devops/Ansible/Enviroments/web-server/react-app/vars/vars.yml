@@ -1,0 +1,12 @@
+# Project Variables
+# - - - - - - - - - - -
+project_name: "sal-admin"
+project_port: "4000"
+project_path: "/home/ubuntu/sal/"
+project_domain: "{{ project_name }}.techhive.dev"
+project_email: "techivedevs@gmail.com"
+project_repo: "git@github.com:TechHiveDev/{{ project_name }}.git"
+
+# NodeJs Version
+# - - - - - - - - - - -
+node_version: "16"

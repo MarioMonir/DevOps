@@ -1,0 +1,133 @@
+# Build / Deploy Steps :
+# -------------------------------
+# 1  - Install required packages:
+#     => nginx, certbot, python3-certbot-nginx, curl, unzip
+# 2  - Install Node js Repo
+# 3  - Install Node js
+# 4  - Start Nginx Server
+# 5  - Template project Nginx config
+# 6  - Setup Certbot for Nginx ( ssl ceritficate for app domain )
+# 7  - Restart Nginx Server
+# 8  - Create app directory if not exist
+# 9  - Pull / Clone Repo if not exist
+# 10 - Install pm2 then UnZip build then Serve app by PM2
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Assumptions
+# --------------
+# The Script Assuemed that the app build on the latest build on file
+# build.zip ( as github actions already have a build and zip step )
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- name: Install Build , Deploy and Congigure Nginx with SSL Node App
+  hosts: all
+  become: true
+
+  # =====================================================
+
+  vars:
+    project_name: "sal-admin"
+    project_port: "4000"
+    project_path: "/home/ubuntu/sal/"
+    project_domain: "{{ project_name }}.techhive.dev"
+    project_email: "techivedevs@gmail.com"
+    project_repo: "git@github.com:TechHiveDev/{{ project_name }}.git"
+    node_version: "16"
+
+  # =====================================================
+
+  tasks:
+    - name: Ensure Required Packages is Installed
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      with_items:
+        - nginx
+        - certbot
+        - python3-certbot-nginx
+        - curl
+        - unzip
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Ensure Node Js Repo is Installed
+      ansible.builtin.shell: >
+        curl -sL https://deb.nodesource.com/setup_{{ node_version }}.x | bash -
+    # - - - - - - - - - - - - - - - - - -
+    - name: Ensure Node Js is Installed
+      ansible.builtin.package:
+        name: nodejs
+        state: latest
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Ensure Nginx Service is Stared
+      ansible.builtin.service:
+        name: nginx
+        state: started
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: "Template the nginx {{ project_name }}.conf"
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/templates/nginx.conf.j2"
+        dest: "/etc/nginx/conf.d/{{ project_name }}.conf"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: "Create a /var/log/nginx/{{ project_name }} nginx log directory if not exist"
+      ansible.builtin.file:
+        path: "/var/log/nginx/{{ project_name }}"
+        state: directory
+        mode: "0755"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Setup Certbot for Nginx
+      ansible.builtin.shell: >
+        certbot --nginx
+        -d {{ project_domain }}
+        -m {{ project_email }} 
+        --non-interactive --agree-tos
+    # - - - - - - - - - - - - - - - - - -
+    - name: Ensure Nginx Service is Restared
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: "Create a {{ project_path }} directory if not exist"
+      ansible.builtin.file:
+        path: "{{ project_path }}"
+        state: directory
+        mode: "0755"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: Pull / Clone Repo if not exist
+      ansible.builtin.git:
+        repo: "{{ project_repo }}"
+        dest: "{{ project_path }}{{ project_name }}"
+
+    # - - - - - - - - - - - - - - - - - -
+
+    - name: "Install pm2 then UnZip build then Serve app by PM2"
+      ansible.builtin.shell: |
+        # Install PM2 / serve node modules 
+        npm install pm2 serve -g
+
+        # Enter Project Path 
+        cd {{ project_path }}{{ project_name }}
+
+        # UnZip the build file 
+        unzip -o build.zip
+
+        # Delete the server process if exist nad start it 
+        pm2 delete -s {{ project_name }} || :
+        pm2 start "npm run serve" --name {{ project_name }}
+
+    # - - - - - - - - - - - - - - - - - -

@@ -1,0 +1,27 @@
+- name: Install Nginx
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Ensure Required Packages is Installed
+      ansible.builtin.package:
+        name: nginx
+        state: latest
+
+    - name: Ensure Nginx Service is Stared
+      ansible.builtin.service:
+        name: nginx
+        state: started
+
+    - name: "Template the nginx {{ project_name }}.conf"
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/templates/nginx.conf.j2"
+        dest: "/etc/nginx/conf.d/{{ project_name }}.conf"
+
+    - name: "Create a /var/log/nginx/{{ project_name }} nginx log directory if not exist"
+      ansible.builtin.file:
+        path: "/var/log/nginx/{{ project_name }}"
+        state: directory
+        mode: "0755"

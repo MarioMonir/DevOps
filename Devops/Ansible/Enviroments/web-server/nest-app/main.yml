@@ -1,0 +1,47 @@
+# Build / Deploy Steps :
+# -------------------------------
+# 1  - Install required packages:
+#     => nginx, certbot, python3-certbot-nginx, curl, unzip
+# 2  - Install Node js Repo
+# 3  - Install Node js
+# 4  - Start Nginx Server
+# 5  - Template project Nginx config
+# 6  - Setup Certbot for Nginx ( ssl ceritficate for app domain )
+# 7  - Restart Nginx Server
+# 8  - Create app directory if not exist
+# 9  - Pull / Clone Repo if not exist
+# 10 - Install pm2 then UnZip build then Serve app by PM2
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Assumptions
+# --------------
+# The Script Assuemed that the app build on the latest build on file
+# build.zip ( as github actions already have a build and zip step )
+# as the build process is very heavy computational and should not be
+# done on a remote machine
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- name: Install Build , Deploy and Congigure Nginx with SSL Node App
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  vars_files:
+    - ./vars/vars.yml
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Install Nginx
+      include_tasks: ./tasks/01_intall_nginx.yml
+
+    - name: Install NodeJs
+      include_tasks: ./tasks/02_install_nodejs.yml
+
+    - name: Install and Configure Certbot
+      include_tasks: ./tasks/03_install_certbot.yml
+
+    - name: Deploy Node App
+      include_tasks: ./tasks/04_deploy_node_app.yml

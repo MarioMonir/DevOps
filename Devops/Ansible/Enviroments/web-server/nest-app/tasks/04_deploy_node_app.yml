@@ -1,0 +1,37 @@
+- name: Deploy Node App
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: "Create a {{ project_path }} directory if not exist"
+      ansible.builtin.file:
+        path: "{{ project_path }}"
+        state: directory
+        mode: "0755"
+
+    - name: Pull / Clone Repo if not exist
+      ansible.builtin.git:
+        repo: "{{ project_repo }}"
+        dest: "{{ project_path }}{{ project_name }}"
+
+    - name: Ensure Required Packages is Installed
+      ansible.builtin.package:
+        name: unzip
+        state: present
+
+    - name: "Install pm2 then UnZip build then Serve app by PM2"
+      ansible.builtin.shell: |
+        # Install pm2 , serve global node modules 
+        npm install pm2 serve -g
+
+        # Enter Project Path 
+        cd {{ project_path }}{{ project_name }}
+
+        # UnZip the build file 
+        # unzip -o build.zip
+
+        # # Delete the server process if exist nad start it 
+        # pm2 delete -s {{ project_name }} || :
+        # pm2 start "npm run serve" --name {{ project_name }}

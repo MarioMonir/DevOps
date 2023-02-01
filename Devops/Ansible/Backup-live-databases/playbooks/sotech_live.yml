@@ -1,0 +1,52 @@
+- name : Backup Sotech Pickle Database on Live Enviroment ( Digital Ocean ) 
+  hosts: sotech_live_server 
+  become: true
+  gather_facts: false
+
+  # - - - - - - - - - - - - - - - - - -
+
+  vars_files:
+  - "../../vars/host.yml"
+  
+  vars:
+    db_name: "sotechtest"
+    db_username: "root"
+    db_password: "tech_hive@fqm"
+    db_path: "/root/backups/{{ db_name }}"
+    myhost_path: "{{ home_path }}/live/{{ db_name }}/"
+    # mysqldump -u root --password="tech_hive@fqm" sotechtest > "sotech_$(date).sql"
+  
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Get Date by linux not by ansible
+      ansible.builtin.shell: echo "{{ db_path }}/{{db_name}}_`date +%Y-%m-%d`" 
+      register: db_pathname
+
+   
+    - name: "Create a {{ db_path }} directory if it does not exist"
+      ansible.builtin.file:
+        path: "{{ db_path }}"
+        state: directory
+        mode: '0755'
+
+
+    - name: Find and Delete Sql Files ( backups ) Older than 3 Days
+      ansible.builtin.shell: >
+        find {{ db_path }}/*.sql -mtime +3 -exec rm {} \;
+
+
+    - name: "Backup {{ db_name }} Database "
+      ansible.builtin.shell: >
+        mysqldump -u root
+        --password="tech_hive@fqm"
+        {{ db_name }}  > 
+        {{ db_pathname['stdout'] }}.sql
+
+
+    - name: "Copy {{ db_name }} sql From Remote to Local"
+      ansible.builtin.fetch:
+        src: "{{ db_pathname['stdout'] }}.sql"
+        dest: "{{ myhost_path }}"
+        flat: yes
+

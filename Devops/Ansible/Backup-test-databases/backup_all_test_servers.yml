@@ -1,0 +1,5 @@
+- name: Run myshop_test.yml playbook
+  import_playbook: ./playbooks/myshop_test.yml
+
+- name: Run sal_test.yml playbook
+  import_playbook: ./playbooks/sal_test.yml

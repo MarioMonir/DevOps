@@ -1,0 +1,29 @@
+- name: Deploy React App
+  hosts: all
+  become: true
+  gather_facts: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  vars_files:
+    - ./vars/vars.yml
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Include task list in play
+      ansible.builtin.include_tasks: ./tasks/00_ping.yml
+#
+#
+# - - - - - - - - - - - - - - - - - -
+#     - name: Install nginx
+#       include_tasks: ./tasks/01_intall_nginx.yml
+
+#     - name: Install NodeJs
+#       include_tasks: ./tasks/02_install_nodejs.yml
+
+#     - name: Install and Configure Certbot
+#       include_tasks: ./tasks/03_install_certbot.yml
+
+#     - name: Deploy Node App
+#       include_tasks: ./tasks/04_deploy_node_app.yml

@@ -1,0 +1,8 @@
+- name: Run sal_live.yml playbook
+  import_playbook: ./playbooks/sal_live.yml
+
+- name: Run sotech_live.yml playbook
+  import_playbook: ./playbooks/sotech_live.yml
+
+- name: Run sotech_live.yml playbook
+  import_playbook: ./playbooks/myshop_live.yml

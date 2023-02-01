@@ -1,0 +1,44 @@
+- name : Backup Sal Database on Live Enviroment ( Digital Ocean ) 
+  hosts: sal_live_server 
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  vars_files:
+  - "../../vars/host.yml"
+  
+  vars:
+    db_name: "sal"
+    db_username: "root"
+    db_path: "/root/backups/{{ db_name }}"
+    db_pathname: "{{ db_path }}/{{ db_name }}_{{ ansible_date_time['date'] }}.sql"
+    myhost_path: "{{ home_path }}/live/{{ db_name }}/"
+    # mysqldump -u [username] -p [database-to-dump] > [database-to-receive]
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Create a {{ db_path }} directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ db_path }}"
+        state: directory
+        mode: '0755'
+
+
+    - name: Find and Delete Sql Files ( backups ) Older than 3 Days
+      ansible.builtin.shell: >
+        find {{ db_path }}/*.sql -mtime +3 -exec rm {} \;
+
+
+    - name: "Backup {{ db_name }} Database "
+      ansible.builtin.shell: >
+        sudo mysqldump -u root 
+        {{ db_name }}  > 
+        {{ db_pathname }}
+
+    - name: Copy {{ db_name }} sql From Remote to Local
+      ansible.builtin.fetch:
+        src: "{{ db_pathname }}"
+        dest: "{{ myhost_path }}"
+        flat: yes
+

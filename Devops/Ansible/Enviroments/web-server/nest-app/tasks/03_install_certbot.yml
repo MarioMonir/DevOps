@@ -1,0 +1,27 @@
+- name: Install And Configure Certbot SSL
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Ensure Required Packages is Installed
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      with_items:
+        - certbot
+        - python3-certbot-nginx
+
+    - name: Setup Certbot for Nginx
+      ansible.builtin.shell: >
+        certbot --nginx
+        -d {{ project_domain }}
+        -m {{ project_email }} 
+        --non-interactive --agree-tos
+
+    - name: Ensure Nginx Service is Restared
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

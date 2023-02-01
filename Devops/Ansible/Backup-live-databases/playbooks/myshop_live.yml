@@ -1,0 +1,46 @@
+- name : Backup My Shop Database on Live Enviroment ( Go Daddy ) 
+  hosts: go_daddy_server 
+  become: true
+  
+    # - - - - - - - - - - - - - - - - - -
+  
+  vars_files:
+  - "../../vars/host.yml"
+
+  vars:
+    db_name: "smartswa_myshop"
+    db_username: "root"
+    db_path: "/root/backups/{{ db_name }}"
+    db_pathname: "{{ db_path }}/{{ db_name }}_{{ ansible_date_time['date'] }}.sql"
+    myhost_path: "{{ home_path }}/live/{{ db_name }}/"
+    # sudo mysqldump -u root smartswa_myshop > "myshop_$(date).sql"
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Create a {{ db_path }} directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ db_path }}"
+        state: directory
+        mode: '0755'
+        
+
+    - name: Find and Delete Sql Files ( backups ) Older than 1 Day
+      ansible.builtin.shell: >
+        find {{ db_path }}/*.sql -mtime +1 -exec rm {} \;
+    
+
+    - name: "Backup {{ db_name }} Database "
+      ansible.builtin.shell: >
+        sudo mysqldump -u root 
+        {{ db_name }}  > 
+        {{ db_pathname }}
+
+
+    - name: Copy {{ db_name }} sql From Remote to Local
+      ansible.builtin.fetch:
+        src: "{{ db_pathname }}"
+        dest: "{{ myhost_path }}"
+        flat: yes
+
+

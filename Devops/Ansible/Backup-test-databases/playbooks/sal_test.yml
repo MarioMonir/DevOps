@@ -1,0 +1,47 @@
+- name : Backup Sal Database on Test Enviroment ( Contabo ) 
+  hosts: all 
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+  vars_files:
+  - "../../vars/host.yml"
+
+  vars:
+    db_docker: "sal_db"
+    db_name: "sal"
+    db_username: "root"
+    db_password: "secret"
+    db_path: "/root/backups/{{ db_name }}"
+    db_pathname: "{{ db_path }}/{{ db_name }}_{{ ansible_date_time['date'] }}.sql"
+    myhost_path: "{{ home_path }}/test/{{ db_name }}/"
+    # docker exec CONTAINER /usr/bin/mysqldump -u root --password=root DATABASE > backup.sql
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Create a {{ db_path }} directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ db_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Find and Delete Sql Files ( backups ) Older than 7 Days
+      ansible.builtin.shell: >
+        find {{ db_path }}/*.sql -mtime +7 -exec rm {} \;
+
+    - name: "Backup {{ db_docker }} Docker Database "
+      ansible.builtin.shell: >
+        docker exec {{ db_docker }}
+        /usr/bin/mysqldump 
+        -u {{ db_username }}
+        --password={{ db_password }}
+        {{ db_name }}  > 
+        {{ db_pathname }}
+
+
+    - name: Copy {{ db_docker }} sql From Remote to Local
+      ansible.builtin.fetch:
+        src: "{{ db_pathname }}"
+        dest: "{{ myhost_path }}"
+        flat: yes
+

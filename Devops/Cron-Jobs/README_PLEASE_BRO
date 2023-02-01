@@ -1,0 +1,4 @@
+
+Server aims to run ansible playbook inside Devops / Ansible 
+to backup Test and Live Servers Databases every day at 8:00 am
+0 8 * * *  /usr/bin/bash /home/ubuntu/DevOps/Cron-Jobs/cron.sh  >> /home/ubuntu/DevOps/Cron-Jobs/cron.log

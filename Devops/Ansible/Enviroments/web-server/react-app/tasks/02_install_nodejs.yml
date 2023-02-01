@@ -1,0 +1,20 @@
+- name: Install Node.js
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Ensure Required Packages is Installed
+      ansible.builtin.package:
+        name: curl
+        state: latest
+
+    - name: Ensure Node Js Repo is Installed
+      ansible.builtin.shell: >
+        curl -sL https://deb.nodesource.com/setup_{{ node_version }}.x | bash -
+
+    - name: Ensure Node Js is Installed
+      ansible.builtin.package:
+        name: nodejs
+        state: latest
