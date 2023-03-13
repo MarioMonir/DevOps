@@ -1,0 +1,7 @@
+---
+- name: Ansible Tutorial
+  hosts: all
+  become: true
+
+  roles:
+    - ping
