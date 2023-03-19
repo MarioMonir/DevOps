@@ -1,0 +1,38 @@
+{
+  "name": "docker-react-node-mysql-env",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node app.ts",
+    "dev": "tsnd --respawn app.ts",
+    "build:local": "DATABASE_HOST=localhost tsc",
+    "build:docker": "tsc",
+    "serve:local": "DATABASE_HOST=localhost node ./dist/app.js",
+    "serve:docker": "node ./dist/app.js",
+    "migrate:local": "DATABASE_HOST=localhost npx prisma migrate dev --name init",
+    "migrate:docker": "npx prisma migrate dev",
+    "seed:local": "DATABASE_HOST=localhost node ./dist/src/seed.database.js",
+    "seed:docker": "ts-node ./src/seed.database.ts",
+    "deploy:local": "DATABASE_HOST=localhost && yarn build:local && yarn migrate:local && yarn seed:local && yarn serve:local",
+    "deploy:docker": "yarn migrate:docker && yarn seed:docker && yarn serve:docker",
+    "prisma-studio": "npx prisma studio",
+    "docker-compose": "docker-compose --project-name 'mario-project-postgres' -p mario-app-contianer-postgres up --build -d"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "prisma": "^4.6.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "@prisma/client": "4.6.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "dotenv-expand": "^9.0.0",
+    "express": "^4.18.2"
+  }
+}
