@@ -1,0 +1,18 @@
+- name : Run Ansible Tut 5 ( Ansible Vault )
+  hosts: all 
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  vars_files:
+  - vars/{{ansible_os_family}}.yml
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Server Meta Data
+      debug: msg="{{ ansible_distribution }} / {{ ansible_os_family }}" 
+
+
+
+

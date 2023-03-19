@@ -1,0 +1,7 @@
+#   It's better to be safe than to be sorry
+- name: Ansible Roles Tutorial
+  hosts: all
+  become: true
+
+  roles:
+    - ping

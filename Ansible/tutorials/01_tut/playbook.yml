@@ -1,0 +1,70 @@
+- hosts: all
+  become: true   # become the super user 
+
+  vars:
+    single_quote: ""
+    file_contents: "{{ lookup('file', '.env') }}"
+
+  tasks: 
+     
+      # - set_fact:
+      #     env_vars: "{{ file_contents.replace('\"', single_quote).split('\n') }}"
+
+      # - name: "Display environment variables"
+      #   command: env
+      #   environment: "{{ env_vars }}"
+          
+    # - - - - - - - - - - - - - - - - - - - 
+      
+     - name: Ping the servers 
+       ansible.builtin.ping: 
+
+    # - - - - - - - - - - - - - - - - - - - 
+
+    # - name: Ensure git in the latest version
+    #   apt: 
+    #     name: git
+    #     state: latest
+
+    # - - - - - - - - - - - - - - - - - - - 
+
+    # - name: Ensure nginx is at the latest version
+    #   apt:
+    #     name: nginx
+    #     state: latest
+    
+    # - - - - - - - - - - - - - - - - - - - 
+    
+    # - name: Start nginx service
+    #   service:
+    #       name: nginx
+    #       state: started
+
+
+    # - - - - - - - - - - - - - - - - - - - 
+
+    # - name: display multiple file contents
+    #   ansible.builtin.debug: var=item
+    #   with_file:
+    #     - ".env"
+    #   register: output
+
+    # - debug: 
+        # var: output
+    
+    # - debug:
+    #     msg: "{{ lookup('.env','SHELL') }}"
+
+
+    # - name: Get env file content
+    #   shell: . ./.env && env
+    #   register: env_file_result
+
+    # - name: Parse environment
+    #   set_fact:
+    #     env_vars: "{{ ('{' + env_file_result.stdout_lines | map('regex_replace', '([^=]*)=(.*)', '\"\\1\": \"\\2\"') | join(',') + '}') | from_json }}"
+
+    # - name: Display environment variables
+    #   command: env
+    #   environment: "{{ env_vars }}"
+

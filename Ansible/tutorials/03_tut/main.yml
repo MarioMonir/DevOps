@@ -1,0 +1,43 @@
+- name: Run Ansible Tut 3
+  hosts: techhive
+  become: true
+
+  # ---------------------------------------
+
+  handlers:
+    - name: print datetime
+      debug:
+        var: ansible_date_time['iso8601']
+
+  # ---------------------------------------
+
+  tasks:
+    - name: Ensure nginx is at the latest version
+      package:
+        name: nginx
+        state: latest
+
+    - name: Ensure nginx service is started
+      service:
+        name: nginx
+        state: stopped
+        enabled: true
+      notify: print datetime
+
+    - name: Add Enviroment Variable
+      ansible.builtin.lineinfile:
+        path: "~/.bashrc"
+        regexp: "^MARIO="
+        line: "MARIO=MONIR"
+      become: false
+
+    
+    - name: Download a file on the remote server
+      ansible.builtin.get_url:
+        url: http://212.183.159.230/5MB.zip
+        dest: /home/ubuntu/mario
+
+    
+  
+
+

@@ -1,0 +1,3 @@
+---
+- name: Ping Server Role
+  ansible.builtin.ping:

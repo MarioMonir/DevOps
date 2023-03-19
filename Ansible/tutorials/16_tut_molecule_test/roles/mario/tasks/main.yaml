@@ -1,0 +1,7 @@
+---
+- name: Ping My Self
+  ansible.builtin.ping:
+
+- name: Server Meta Data
+  ansible.builtin.debug:
+    msg: "{{ ansible_distribution }} / {{ ansible_os_family }}"
