@@ -18,7 +18,7 @@ const prisma = new PrismaClient();
 // ---------------------------------------
 
 const corsOption = {
-  origin: ["http://localhost:4173"],
+  origin: ["http://localhost:3000"],
 };
 
 // ---------------------------------------

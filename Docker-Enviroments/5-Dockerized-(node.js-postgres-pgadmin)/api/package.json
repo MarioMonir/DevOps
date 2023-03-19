@@ -17,7 +17,7 @@
     "deploy:local": "DATABASE_HOST=localhost && yarn build:local && yarn migrate:local && yarn seed:local && yarn serve:local",
     "deploy:docker": "yarn migrate:docker && yarn seed:docker && yarn serve:docker",
     "prisma-studio": "npx prisma studio",
-    "docker-compose": "docker-compose --project-name 'mario-project-postgres' -p mario-app-contianer-postgres up --build -d"
+    "docker-compose": "docker-compose -p mario-app-contianer up --build -d"
   },
   "author": "",
   "license": "ISC",

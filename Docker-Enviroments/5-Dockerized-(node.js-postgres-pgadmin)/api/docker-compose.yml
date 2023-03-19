@@ -22,6 +22,21 @@ services:
 
   # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
+  pgadmin:
+    container_name: ${DATABASE_HOST}_pgadmin4
+    env_file: .env
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $PROJECT_NAME@$PROJECT_NAME.com
+      PGADMIN_DEFAULT_PASSWORD: $PROJECT_NAME
+    networks:
+      - app_network
+    ports:
+      - "5050:80"
+
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   mario_api:
     container_name: mario_api
     restart: unless-stopped
@@ -38,16 +53,16 @@ services:
 
   # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  # mario_client:
-  #   container_name: mario_client
-  #   restart: unless-stopped
-  #   build: ../client
-  #   ports:
-  #     - $CLIENT_PORT:$CLIENT_PORT
-  #   expose:
-  #     - $CLIENT_PORT
-  #   networks:
-  #     - app_network
+  mario_client:
+    container_name: mario_client
+    restart: unless-stopped
+    build: ../client
+    ports:
+      - $CLIENT_PORT:$CLIENT_PORT
+    expose:
+      - $CLIENT_PORT
+    networks:
+      - app_network
 
 
 # ------------------------------------ 
