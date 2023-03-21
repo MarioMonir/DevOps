@@ -1,0 +1,31 @@
+---
+- name: Ansible Tutorial
+  hosts: localhost
+  connection: local
+
+  # Ansible Testing Spectrum                 Increase Complexity
+  # =========================               ======================
+  # 1. ansible-playbook --syntax-check                |
+  # 2. ansible-lint                                   |
+  # 3. molecule test (intergration)                   |
+  # 4. ansible-playbook --check (against prod)        |
+  # 5. Parallel Infrastructure                        V
+
+  # ------------------------------------------------
+
+  tasks:
+    - name: Print screen
+      ansible.builtin.debug:
+        msg: "hello world"
+
+    - name: ensure nginx is at the latest version
+      ansible.builtin.package:
+        name:
+          - nginx
+        state: latest
+
+    - name: start nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes 

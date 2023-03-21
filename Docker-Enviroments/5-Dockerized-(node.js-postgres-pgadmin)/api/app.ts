@@ -18,7 +18,7 @@ const prisma = new PrismaClient();
 // ---------------------------------------
 
 const corsOption = {
-  origin: ["http://localhost:3000"],
+  origin: [process.env.CLIENT_URL || "*"],
 };
 
 // ---------------------------------------
@@ -31,10 +31,14 @@ app.get("/", (_req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
+// ---------------------------------------
+
 app.get("/user", async (_req: Request, res: Response) => {
   const users = await prisma.user.findMany();
   res.status(202).json(users);
 });
+
+// ---------------------------------------
 
 app.listen(port, () => {
   console.log("env", process.env.DATABASE_URL);
